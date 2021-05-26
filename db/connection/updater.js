@@ -1,12 +1,12 @@
 let execSQL = require('./sqlExecutor').execSQL
 
-async function simpleUpdate(conn, table, newVal, conditionCol, param) {
+async function simpleUpdate(table, updateCol, newVal, conditionCol, param) {
   let signal = null
   let retWaiter = new Promise(r=>{signal = r})
 
-  let sql = `UPDATE ${table} set c_block=? where ${conditionCol}=?`
+  let sql = `UPDATE ${table} set ${updateCol}=? where ${conditionCol}=?`
 
-  execSQL(conn, sql, [newVal, param], e=>{
+  execSQL(sql, [newVal, param], e=>{
     signal(e)
   })
 

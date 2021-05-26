@@ -1,5 +1,7 @@
+const getPool = require('./connect').getPool
+
 function execSQL(conn, sql, data, cb) {
-  conn.getConnection((e, c)=>{
+  getPool().getConnection((e, c)=>{
     if(e) {
       cb(e, null, null)
     } else {

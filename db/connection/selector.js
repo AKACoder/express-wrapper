@@ -28,19 +28,19 @@ function multiRows(err, result) {
   return result
 }
 
-async function simpleSelectSingleRow(conn, table, conditionCol, param, order = '') {
+async function simpleSelectSingleRow(table, conditionCol, param, order = '') {
   let signal = null
   let getter = new Promise(r=>{signal = r})
 
   let sql = `SELECT * FROM ${table} where ${conditionCol}=? ${order}`;
-  execSQL(conn, sql, [param], (e, r)=>{
+  execSQL(sql, [param], (e, r)=>{
     signal(singleRowToPlainObject(e, r))
   })
 
   return await getter
 }
 
-async function simpleSelectMultiRow(conn, table, conditionCol, param, orderCol, isDESC, page = null, rowCount = null) {
+async function simpleSelectMultiRow(table, conditionCol, param, orderCol, isDESC, page = null, rowCount = null) {
   let listSignal = null
   let listGetter = new Promise(r=>{listSignal = r})
 
@@ -56,7 +56,7 @@ async function simpleSelectMultiRow(conn, table, conditionCol, param, orderCol, 
   }
 
   let sql = `SELECT * FROM ${table} where ${conditionCol}=? ORDER BY ${orderCol} ${isDESC ? `DESC`:`ASC`} ${limitSQL}`;
-  execSQL(conn, sql, [param], (e, r)=>{
+  execSQL(sql, [param], (e, r)=>{
     listSignal(multiRows(e, r))
   })
 
@@ -64,7 +64,7 @@ async function simpleSelectMultiRow(conn, table, conditionCol, param, orderCol, 
 
 
   sql = `SELECT count(*) AS RowCount FROM ${table} where ${conditionCol}=?`;
-  execSQL(conn, sql, [param], (e, r)=>{
+  execSQL(sql, [param], (e, r)=>{
     countSignal(singleRowToPlainObject(e, r))
   })
   let count = await countGetter
