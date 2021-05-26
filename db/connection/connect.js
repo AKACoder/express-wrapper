@@ -6,7 +6,7 @@ let pool = mysql.createPool({
     password: process.env.PROJECT_MYSQL_PWD || 'password',
     database: process.env.PROJECT_MYSQL_DATABASE || 'database',
     charset: process.env.PROJECT_MYSQL_CHARSET || "utf8mb4",
-    port: process.env.PROJECT_MYSQL_CHARSET || 3306
+    port: process.env.PROJECT_MYSQL_PORT || 3306
   }
 )
 
